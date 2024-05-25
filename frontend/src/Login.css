@@ -1,0 +1,87 @@
+.login-box {
+    width: 300px;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-box h2 {
+    margin: 0 0 20px;
+    padding: 0;
+    color: #333;
+    text-align: center; /* Mantieni il titolo centrato */
+  }
+  
+  .login-box .textbox {
+    position: relative;
+    margin-bottom: 30px;
+    text-align: left; /* Allinea il contenuto delle textbox a sinistra */
+  }
+  
+  .login-box .textbox label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .login-box input[type="text"],
+  .login-box input[type="password"] {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin-top: 5px;
+    border: none;
+    background: #f2f2f2;
+    display: inline-block;
+    font-size: 14px;
+  }
+
+  .login-box input[type="text"]::placeholder,
+  .login-box input[type="password"]::placeholder {
+  font-size: 14px; 
+  }
+
+  
+  .login-box button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #3478F6;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  .login-box button[type="button"] {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .login-box button.show-password-button {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-60%) translateX(100px);
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+  .login-box .password-icon {
+    font-size: 16px; /* Imposta la dimensione dell'icona */
+    color: #888; /* Imposta il colore dell'icona */
+    padding: 0 10px; /* Aggiusta il padding per l'icona */
+  }
+  
