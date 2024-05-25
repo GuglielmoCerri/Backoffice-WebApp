@@ -49,10 +49,6 @@ test-results/
 debug/
 .cache/
 
-# Dependencies and package manager files
-package-lock.json
-yarn.lock
-
 # Other
 *.bak
 *.swp
