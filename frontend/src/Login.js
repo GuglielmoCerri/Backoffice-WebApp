@@ -7,6 +7,7 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -48,6 +49,15 @@ const Login = () => {
                 className="password-icon"
             />
           </button>
+        </div>
+        <div className="checkbox">
+          <input
+            type="checkbox"
+            id="rememberMe"
+            checked={rememberMe}
+            onChange={() => setRememberMe(!rememberMe)}
+          />
+          <label htmlFor="remember">Remember</label>
         </div>
         <button type="submit" className="btn">Login</button>
       </form>

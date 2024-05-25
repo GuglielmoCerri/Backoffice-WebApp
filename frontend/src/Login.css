@@ -85,3 +85,14 @@
     padding: 0 10px; /* Aggiusta il padding per l'icona */
   }
   
+  .login-box .checkbox {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+  
+  .login-box .checkbox label {
+    margin-left: 5px;
+    font-size: 16px;
+    color: #333;
+  }
+  
