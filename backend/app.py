@@ -1,10 +1,12 @@
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity, create_access_token, create_refresh_token
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
+from datetime import timedelta
+
 
 load_dotenv()
 
@@ -48,9 +50,24 @@ def login():
     user = User.query.filter_by(username=username).first()
 
     if user and check_password_hash(user.password, password):
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token)
+        access_token = create_access_token(identity=username, fresh=True, expires_delta=timedelta(minutes=30))
+        refresh_token = create_refresh_token(identity=username)
+        return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+    
     return jsonify({"message": "Invalid credentials"}), 401
+
+@app.route('/verify', methods=['GET'])
+@jwt_required()
+def verify():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+
+@app.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    current_user = get_jwt_identity()
+    access_token = create_access_token(identity=current_user, fresh=False, expires_delta=timedelta(minutes=30))
+    return jsonify(access_token=access_token), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
