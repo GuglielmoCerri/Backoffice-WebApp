@@ -29,7 +29,7 @@ const Login = () => {
       alert('Registration successful!');
       setIsRegistering(false);
     } catch (error) {
-      alert('Registration failed: ' + (error.response ? error.response.data.message : error.message));
+      alert('Registration failed');
     }
   };
 
