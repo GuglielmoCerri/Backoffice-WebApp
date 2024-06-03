@@ -54,3 +54,6 @@ debug/
 *.swp
 *.temp
 backend/venv_mokka
+
+# Security
+.env
