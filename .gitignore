@@ -53,3 +53,4 @@ debug/
 *.bak
 *.swp
 *.temp
+backend/venv_mokka
