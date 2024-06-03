@@ -11,12 +11,50 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
 
+  const verifyToken = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/verify', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log("Token verification successful:", response.data);
+      } catch (error) {
+        console.error("Token verification failed:", error.response.data);
+      }
+    }
+  };
+  
+  const refreshToken = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await axios.post('http://127.0.0.1:5000/refresh', {
+          refresh_token: token
+        });
+        const newAccessToken = response.data.access_token;
+        console.log("Token refresh successful");
+        localStorage.setItem('token', newAccessToken);
+      } catch (error) {
+        console.error("Token refresh failed:", error.response.data);
+      }
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://127.0.0.1:5000/login', {username, password});
-      localStorage.setItem('token', response.data.access_token);
+      const { access_token } = response.data;
+      // 7 days if 'Remember Me' is True, otherwise 30 minutes
+      const tokenExpiration = rememberMe ? Date.now() + (1000 * 60 * 60 * 24 * 7) : Date.now() + (1000 * 60 * 30); 
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('tokenExpiration', tokenExpiration);
       alert('Login successful!');
+      verifyToken();
+      refreshToken();
     } catch (error) {
       alert('Login failed');
     }
@@ -29,7 +67,7 @@ const Login = () => {
       alert('Registration successful!');
       setIsRegistering(false);
     } catch (error) {
-      alert('Registration failed');
+      alert('Registration failed' + error);
     }
   };
 
