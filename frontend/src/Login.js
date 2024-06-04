@@ -3,13 +3,18 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './Login.css'; 
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
+  const [authenticated, setauthenticated] = useState(
+    localStorage.getItem(localStorage.getItem("authenticated") || false)
+  );
 
   const verifyToken = async () => {
     const token = localStorage.getItem('token');
@@ -52,7 +57,8 @@ const Login = () => {
       const tokenExpiration = rememberMe ? Date.now() + (1000 * 60 * 60 * 24 * 7) : Date.now() + (1000 * 60 * 30); 
       localStorage.setItem('token', access_token);
       localStorage.setItem('tokenExpiration', tokenExpiration);
-      alert('Login successful!');
+      localStorage.setItem("authenticated", true);
+      navigate("/customers");
       verifyToken();
       refreshToken();
     } catch (error) {
