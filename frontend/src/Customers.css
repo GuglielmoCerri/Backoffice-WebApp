@@ -1,0 +1,38 @@
+/* Stile generale della tabella */
+.table-container {
+    margin: 0 auto;
+    width: 80%; /* Larghezza desiderata della tabella */
+  }
+  
+  /* Stile dei pulsanti "Modifica" e "Elimina" */
+  .edit-button {
+    background-color: yellow;
+    color: black;
+    border: none;
+  }
+  
+  .delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+  }
+  
+  /* Stile del pulsante "Aggiungi" */
+  .add-button {
+    position: absolute;
+    margin-top: 1em;
+    /*bottom: 20px; /* Distanza dal basso */
+    /*left: 20px; /* Distanza dalla sinistra */
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  /* Animazione al passaggio del mouse sul pulsante "Aggiungi" */
+  .add-button:hover {
+    background-color: darkgreen;
+  }
+  
