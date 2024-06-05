@@ -18,14 +18,86 @@ db = SQLAlchemy(app)
 CORS(app)
 jwt = JWTManager(app)
 
+# ------------------------------ DB SCHEMA ------------------------------
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
 
+class Customer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(120), nullable=False)
+    location = db.Column(db.String(140), nullable=False)
+    hobbies = db.Column(db.String(140), nullable=False)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+# ------------------------------------------------------------------------- 
+def apply_filters_and_pagination(query, request_args, sortable_fields):
+    # Filter
+    for key, value in request_args.items():
+        if key in sortable_fields:
+            query = query.filter(getattr(Customer, key).like(f"%{value}%"))
+
+    # Ordering
+    sort_by = request_args.get('sort_by', None)
+    if sort_by in sortable_fields:
+        direction = request_args.get('direction', 'asc')
+        if direction == 'desc':
+            query = query.order_by(getattr(Customer, sort_by).desc())
+        else:
+            query = query.order_by(getattr(Customer, sort_by).asc())
+
+    # Pagination
+    page = int(request_args.get('page', 1))
+    per_page = int(request_args.get('per_page', 10))
+    return query.paginate(page=page, per_page=per_page)
+
+# --------------- CUSTOMERS ENDPOINT ---------------
+@app.route('/customers', methods=['GET'])
+def get_customers():
+    query = Customer.query
+    customers = apply_filters_and_pagination(query, request.args, ['name', 'email', 'phone', 'location', 'hobbies'])
+    return jsonify([customer.as_dict() for customer in customers])
+
+@app.route('/customer/<int:id>', methods=['GET'])
+def get_customer(id):
+    customer = Customer.query.get_or_404(id)
+    return jsonify(customer.as_dict())
+
+@app.route('/customer', methods=['POST'])
+def add_customer():
+    data = request.get_json()
+    new_customer = Customer(name=data['name'], email=data['email'], phone=data['phone'], location=data['location'], hobbies=data['hobbies'])
+    db.session.add(new_customer)
+    db.session.commit()
+    return jsonify(new_customer.as_dict()), 201
+
+@app.route('/customer/<int:id>', methods=['PUT'])
+def update_customer(id):
+    data = request.get_json()
+    customer = Customer.query.get_or_404(id)
+    customer.name = data['name']
+    customer.email = data['email']
+    customer.phone = data['phone']
+    customer.location = data['location']
+    customer.hobbies = data['hobbies']
+    db.session.commit()
+    return jsonify(customer.as_dict())
+
+@app.route('/customer/<int:id>', methods=['DELETE'])
+def delete_customer(id):
+    customer = Customer.query.get_or_404(id)
+    db.session.delete(customer)
+    db.session.commit()
+    return '', 204
+
+# --------------- LOGIN ENDPOINT ---------------
 @app.route('/register', methods=['POST'])
 def register():
-    print('asd')
     username = request.json.get('username', '')
     password = request.json.get('password', '')
 
