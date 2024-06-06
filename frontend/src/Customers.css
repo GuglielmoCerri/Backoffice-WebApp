@@ -1,38 +1,159 @@
-/* Stile generale della tabella */
 .table-container {
-    margin: 0 auto;
-    width: 80%; /* Larghezza desiderata della tabella */
-  }
-  
-  /* Stile dei pulsanti "Modifica" e "Elimina" */
-  .edit-button {
-    background-color: yellow;
-    color: black;
-    border: none;
-  }
-  
-  .delete-button {
-    background-color: red;
-    color: white;
-    border: none;
-  }
-  
-  /* Stile del pulsante "Aggiungi" */
-  .add-button {
-    position: absolute;
-    margin-top: 1em;
-    /*bottom: 20px; /* Distanza dal basso */
-    /*left: 20px; /* Distanza dalla sinistra */
-    background-color: green;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-  }
-  
-  /* Animazione al passaggio del mouse sul pulsante "Aggiungi" */
-  .add-button:hover {
-    background-color: darkgreen;
-  }
-  
+  margin: 0 auto;
+  width: 80%; /* Larghezza desiderata della tabella */
+}
+
+.edit-button {
+  background-color: yellow;
+  color: black;
+  border: none;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+}
+
+.add-button {
+  position: absolute;
+  margin-top: 1em;
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.add-button:hover {
+  background-color: darkgreen;
+}
+
+.modal-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999; /* Assicura che il modale sia in primo piano */
+  backdrop-filter: blur(10px); /* Aggiunge uno sfondo sfocato */
+  background-color: rgba(0, 0, 0, 0.5); /* Sfondo scuro traslucido */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 16px; /* Bordo rotondo più pronunciato */
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Effetto rilievo */
+}
+
+.modal-header, .modal-footer, .modal-footer-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header {
+  position: relative;
+}
+
+.modal-header h1 {
+  flex: 1;
+  text-align: center;
+}
+
+.modal-header .close-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  font-size: 18px;
+}
+
+.modal-body {
+  margin-top: 20px;
+}
+
+.modal-footer, .modal-footer-2 {
+  display: flex;
+  justify-content: center; /* Centra il pulsante */
+  align-items: center;
+  margin-top: 20px; /* Aggiunge spazio sopra il pulsante */
+}
+
+.custom-form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.custom-form-group .form-label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 1rem; /* Spazio tra etichetta e input */
+  min-width: 100px; /* Larghezza minima dell'etichetta per l'allineamento */
+}
+
+.custom-form-group .form-label svg {
+  margin-right: 0.5rem; /* Spazio tra icona e testo */
+}
+
+.custom-form-control {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6); /* Linea più corta e meno scura */
+  border-radius: 0; /* Rimuove gli angoli arrotondati */
+  padding-left: 0;
+  padding-right: 0;
+  box-shadow: none;
+  max-width: 22rem; /* Riduce la lunghezza massima della linea */
+  font-size: 1.2rem;
+}
+
+.custom-form-control:focus {
+  border-bottom: 1px solid rgba(0, 123, 255, 0.6); /* Cambia il colore della linea quando il campo è in focus */
+  box-shadow: none;
+}
+
+.custom-form-control::placeholder {
+  color: #ccc; /* Colore del placeholder */
+  font-size: 0.9rem;
+}
+
+.modal-footer button {
+  background-color: green; /* Colore del pulsante */
+  color: white; /* Colore del testo */
+  border: none; /* Rimuove il bordo */
+  padding: 10px 20px; /* Padding */
+  font-size: 16px; /* Dimensione del testo */
+  border-radius: 5px; /* Bordi arrotondati */
+  cursor: pointer; /* Cambia il cursore al passaggio */
+}
+
+.modal-footer button:hover {
+  background-color: darkgreen; /* Colore al passaggio del mouse */
+}
+
+.modal-footer-2 button {
+   background-color: 	#C8C8C8; /* Colore del pulsante */
+  color: white; /* Colore del testo */
+  border: none; /* Rimuove il bordo */
+  padding: 10px 20px; /* Padding */
+  font-size: 18px; /* Dimensione del testo */
+  border-radius: 5px; /* Bordi arrotondati */
+  cursor: pointer; /* Cambia il cursore al passaggio */
+}
+
+.modal-footer-2 button:hover {
+  background-color: darkgray; /* Colore al passaggio del mouse */
+}

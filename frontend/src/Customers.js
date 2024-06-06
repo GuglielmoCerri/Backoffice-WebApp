@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useTable } from 'react-table';
 import { Button, Modal, Form } from 'react-bootstrap';
 import './Customers.css'; // Aggiunta per importare il file CSS
+import ModalCustomer from './components/CustomerModal';
 
 const Customers = () => {
   const [customers, setCustomers] = useState([]);
@@ -30,6 +31,14 @@ const Customers = () => {
 
   const addCustomer = async () => {
     try {
+      if (!name) {
+        alert('Name field is required!');
+        return; 
+      }
+      if (!email) {
+        alert('Email field is required!');
+        return; 
+      }
       await axios.post('http://127.0.0.1:5000/customer', { name, email, phone, location, hobbies });
       fetchCustomers();
       setShowAddModal(false);
@@ -170,71 +179,25 @@ const Customers = () => {
         </tbody>
       </table>
       <Button className="add-button" variant="success" onClick={() => setShowAddModal(true)}>Add Item</Button>
+      
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <Modal.Header>
-          <Modal.Title>Add Customer</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formPhone">
-            <Form.Label>Phone</Form.Label>
-            <Form.Control type="text" placeholder="Enter phone" value={phone} onChange={e => setPhone(e.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formLocation">
-            <Form.Label>Location</Form.Label>
-            <Form.Control type="text" placeholder="Enter location" value={location} onChange={e => setLocation(e.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formHobbies">
-            <Form.Label>Hobbies</Form.Label>
-            <Form.Control type="text" placeholder="Enter hobbies" value={hobbies} onChange={e => setHobbies(e.target.value)} />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={addCustomer}>Add</Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Customer</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
-          </Form.Group>
-        </Modal.Body>
-        <Form.Group controlId="formPhone">
-            <Form.Label>Phone</Form.Label>
-            <Form.Control type="text" placeholder="Enter phone" value={phone} onChange={e => setPhone(e.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formLocation">
-            <Form.Label>Location</Form.Label>
-            <Form.Control type="text" placeholder="Enter location" value={location} onChange={e => setLocation(e.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formHobbies">
-            <Form.Label>Hobbies</Form.Label>
-            <Form.Control type="text" placeholder="Enter hobbies" value={hobbies} onChange={e => setHobbies(e.target.value)} />
-          </Form.Group>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={updateCustomer}>Update</Button>
-        </Modal.Footer>
+        <ModalCustomer 
+          name={name}
+          email={email}
+          phone={phone}
+          location={location}
+          hobbies={hobbies}
+          setName={setName}
+          setEmail={setEmail}
+          setPhone={setPhone}
+          setLocation={setLocation}
+          setHobbies={setHobbies}
+          handleSubmit={addCustomer}
+          handleClose={() => setShowAddModal(false)}
+        />
       </Modal>
     </div>
-  );
-};
+  )
+}
 
 export default Customers;
