@@ -186,7 +186,14 @@ const Customers = () => {
           setLocation={setLocation}
           setHobbies={setHobbies}
           handleSubmit={addCustomer}
-          handleClose={() => setShowAddModal(false)}
+          handleClose={() => {
+            setShowAddModal(false);
+            setName('');
+            setEmail('');
+            setPhone('');
+            setLocation('');
+            setHobbies('');
+          }}
           title="Add Customer"
         />
       </Modal>
@@ -204,7 +211,14 @@ const Customers = () => {
           setLocation={setLocation}
           setHobbies={setHobbies}
           handleSubmit={updateCustomer}
-          handleClose={() => setShowEditModal(false)}
+          handleClose={() => {
+            setShowEditModal(false);
+            setName('');
+            setEmail('');
+            setPhone('');
+            setLocation('');
+            setHobbies('');
+          }}
           title="Edit Customer"
         />
       </Modal>
