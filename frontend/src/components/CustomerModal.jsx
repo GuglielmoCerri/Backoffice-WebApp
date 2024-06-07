@@ -5,13 +5,13 @@ import { Form, Button } from 'react-bootstrap';
 function ModalCustomer({
   name, email, phone, location, hobbies,
   setName, setEmail, setPhone, setLocation, setHobbies,
-  handleSubmit, handleClose
+  handleSubmit, handleClose, title
 }) {
   return (
     <div className="modal-container">
       <div className="modal-content">
         <div className="modal-header">
-          <h1 className="modal-title">Add Customer</h1>
+          <h1 className="modal-title">{title}</h1>
           <Button variant="primary" onClick={handleClose} className="close-button">
             <X size={20} color="black" />
           </Button>
@@ -79,7 +79,7 @@ function ModalCustomer({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default ModalCustomer;

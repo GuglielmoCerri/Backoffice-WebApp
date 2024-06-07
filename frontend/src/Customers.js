@@ -15,7 +15,7 @@ const Customers = () => {
   const [phone, setPhone] = useState('');
   const [location, setLocation] = useState('');
   const [hobbies, setHobbies] = useState('');
-  
+
   useEffect(() => {
     fetchCustomers();
   }, []);
@@ -194,10 +194,29 @@ const Customers = () => {
           setHobbies={setHobbies}
           handleSubmit={addCustomer}
           handleClose={() => setShowAddModal(false)}
+          title="Add Customer"
+        />
+      </Modal>
+
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <ModalCustomer 
+          name={name}
+          email={email}
+          phone={phone}
+          location={location}
+          hobbies={hobbies}
+          setName={setName}
+          setEmail={setEmail}
+          setPhone={setPhone}
+          setLocation={setLocation}
+          setHobbies={setHobbies}
+          handleSubmit={updateCustomer}
+          handleClose={() => setShowEditModal(false)}
+          title="Edit Customer"
         />
       </Modal>
     </div>
-  )
+  );
 }
 
 export default Customers;
