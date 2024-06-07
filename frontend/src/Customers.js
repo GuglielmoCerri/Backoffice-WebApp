@@ -5,6 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getSortedRowModel,
 } from '@tanstack/react-table';
 import { Button, Modal } from 'react-bootstrap';
 import './Customers.css'; // Aggiunta per importare il file CSS
@@ -20,6 +21,7 @@ const Customers = () => {
   const [phone, setPhone] = useState('');
   const [location, setLocation] = useState('');
   const [hobbies, setHobbies] = useState('');
+  const [sorting, setSorting] = useState([]);
 
   useEffect(() => {
     fetchCustomers();
@@ -88,22 +90,27 @@ const Customers = () => {
     columnHelper.accessor('name', {
       header: 'Name',
       cell: info => info.getValue(),
+      sortingFn: (a, b) => a.original.name.toLowerCase().localeCompare(b.original.name.toLowerCase()),
     }),
     columnHelper.accessor('email', {
       header: 'Email',
       cell: info => info.getValue(),
+      sortingFn: (a, b) => a.original.email.toLowerCase().localeCompare(b.original.email.toLowerCase()),
     }),
     columnHelper.accessor('phone', {
       header: 'Phone',
       cell: info => info.getValue(),
+      sortingFn: (a, b) => a.original.phone.localeCompare(b.original.phone),
     }),
     columnHelper.accessor('location', {
       header: 'Location',
       cell: info => info.getValue(),
+      sortingFn: (a, b) => a.original.location.toLowerCase().localeCompare(b.original.location.toLowerCase()),
     }),
     columnHelper.accessor('hobbies', {
       header: 'Hobbies',
       cell: info => info.getValue(),
+      sortingFn: (a, b) => a.original.hobbies.toLowerCase().localeCompare(b.original.hobbies.toLowerCase()),
     }),
     {
       header: 'Actions',
@@ -128,7 +135,12 @@ const Customers = () => {
   const table = useReactTable({
     data: customers,
     columns,
+    state: {
+      sorting,
+    },
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (
@@ -143,13 +155,25 @@ const Customers = () => {
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
-                    <th key={header.id} className="py-3 px-6 text-left">
+                    <th
+                      key={header.id}
+                      className="py-3 px-6 text-left cursor-pointer hover:bg-gray-300" // Aggiungi hover per migliorare l'interazione
+                      onClick={header.column.getToggleSortingHandler()} // Gestore del click per il sorting
+                    >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : (
+                          <>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                            {{
+                              asc: ' 🔼',
+                              desc: ' 🔽'
+                            }[header.column.getIsSorted()] ?? ' 🔽🔼'} {/* Indica la direzione del sorting o mostra le frecce */}
+                          </>
+                        )}
                     </th>
                   ))}
                 </tr>
@@ -224,6 +248,6 @@ const Customers = () => {
       </Modal>
     </div>
   );
-}
+};
 
 export default Customers;
