@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useTable } from 'react-table';
-import { Button, Modal, Form } from 'react-bootstrap';
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { Button, Modal } from 'react-bootstrap';
 import './Customers.css'; // Aggiunta per importare il file CSS
 import ModalCustomer from './components/CustomerModal';
 
@@ -33,11 +38,11 @@ const Customers = () => {
     try {
       if (!name) {
         alert('Name field is required!');
-        return; 
+        return;
       }
       if (!email) {
         alert('Email field is required!');
-        return; 
+        return;
       }
       await axios.post('http://127.0.0.1:5000/customer', { name, email, phone, location, hobbies });
       fetchCustomers();
@@ -77,111 +82,99 @@ const Customers = () => {
     }
   };
 
-  const data = React.useMemo(() => customers, [customers]);
+  const columnHelper = createColumnHelper();
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'Email',
-        accessor: 'email',
-      },
-      {
-        Header: 'Phone',
-        accessor: 'phone',
-      },
-      {
-        Header: 'Location',
-        accessor: 'location',
-      },
-      {
-        Header: 'Hobbies',
-        accessor: 'hobbies',
-      },
-      {
-        Header: 'Actions',
-        accessor: 'id',
-        Cell: ({ row }) => (
-          <div>
-            <Button className="edit-button" variant="info" onClick={() => {
-              setSelectedCustomer(row.original);
-              setName(row.original.name);
-              setEmail(row.original.email);
-              setPhone(row.original.phone);
-              setLocation(row.original.location);
-              setHobbies(row.original.hobbies);
-              setShowEditModal(true);
-            }}>Edit</Button>{' '}
-            <Button className="delete-button" variant="danger" onClick={() => deleteCustomer(row.original.id)}>Del</Button>
-          </div>
-        ),
-      },
-    ],
-    []
-  );
+  const columns = [
+    columnHelper.accessor('name', {
+      header: 'Name',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('email', {
+      header: 'Email',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('phone', {
+      header: 'Phone',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('location', {
+      header: 'Location',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('hobbies', {
+      header: 'Hobbies',
+      cell: info => info.getValue(),
+    }),
+    {
+      header: 'Actions',
+      accessorKey: 'id',
+      cell: ({ row }) => (
+        <div>
+          <Button className="edit-button" variant="info" onClick={() => {
+            setSelectedCustomer(row.original);
+            setName(row.original.name);
+            setEmail(row.original.email);
+            setPhone(row.original.phone);
+            setLocation(row.original.location);
+            setHobbies(row.original.hobbies);
+            setShowEditModal(true);
+          }}>Edit</Button>{' '}
+          <Button className="delete-button" variant="danger" onClick={() => deleteCustomer(row.original.id)}>Del</Button>
+        </div>
+      ),
+    },
+  ];
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({ columns, data });
+  const table = useReactTable({
+    data: customers,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
-    <div className="table-container">
-      <h1>Customers</h1>
-      <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th
-                  {...column.getHeaderProps()}
-                  style={{
-                    borderBottom: 'solid 3px red',
-                    background: 'aliceblue',
-                    color: 'black',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {column.render('Header')}
-                </th>
+    <div className="flex flex-col items-center h-screen bg-gray-100">
+      <div className="title-container">
+        <h1 className="text-3xl font-bold my-4 text-center">Customers</h1>
+      </div>
+      <div className="table-container mx-auto">
+        <div className="overflow-x-auto w-full max-w-4xl">
+          <table className="min-w-full bg-white shadow-md rounded">
+            <thead className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <th key={header.id} className="py-3 px-6 text-left">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      style={{
-                        padding: '10px',
-                        border: 'solid 1px gray',
-                        background: 'papayawhip',
-                      }}
-                    >
-                      {cell.render('Cell')}
+            </thead>
+            <tbody className="text-gray-600 text-sm font-light">
+              {table.getRowModel().rows.map(row => (
+                <tr key={row.id} className="border-b border-gray-200 hover:bg-gray-100">
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} className="py-3 px-6 text-left whitespace-nowrap">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <Button className="add-button" variant="success" onClick={() => setShowAddModal(true)}>Add Item</Button>
-      
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="button-container">
+        <Button className="mt-4 text-center add-customer-button" onClick={() => setShowAddModal(true)}>Add Customer</Button>
+      </div>
+
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <ModalCustomer 
+        <ModalCustomer
           name={name}
           email={email}
           phone={phone}
@@ -199,7 +192,7 @@ const Customers = () => {
       </Modal>
 
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-        <ModalCustomer 
+        <ModalCustomer
           name={name}
           email={email}
           phone={phone}

@@ -1,18 +1,63 @@
 .table-container {
   margin: 0 auto;
-  width: 80%; /* Larghezza desiderata della tabella */
+  width: 80%;
+}
+
+.table-container table {
+  border-spacing: 0;
+  width: 100%;
+}
+
+.table-container th,
+.table-container td {
+  padding: 0.75rem;
+  text-align: center; 
+}
+
+.table-container th:not(:last-child),
+.table-container td:not(:last-child) {
+  border-right: 1px solid #dee2e6;
+}
+
+.table-container th:first-child,
+.table-container td:first-child {
+  padding-left: 1rem;
+}
+
+.table-container th:last-child,
+.table-container td:last-child {
+  padding-right: 1rem;
+}
+
+.table-container thead th {
+  border-bottom: 2px solid #dee2e6;
 }
 
 .edit-button {
-  background-color: yellow;
-  color: black;
+  background-color: #007bff; 
+  color: white; 
   border: none;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button:hover {
+  background-color: #b30000; 
 }
 
 .delete-button {
   background-color: red;
   color: white;
   border: none;
+}
+
+.edit-button,
+.delete-button {
+  padding: 4px 12px;
+  font-size: 1rem;
+  border-radius: 8px;
 }
 
 .add-button {
@@ -39,18 +84,18 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 999; /* Assicura che il modale sia in primo piano */
-  backdrop-filter: blur(10px); /* Aggiunge uno sfondo sfocato */
-  background-color: rgba(0, 0, 0, 0.5); /* Sfondo scuro traslucido */
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
   background-color: #fff;
   padding: 20px;
-  border-radius: 16px; /* Bordo rotondo più pronunciato */
+  border-radius: 16px;
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Effetto rilievo */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header, .modal-footer, .modal-footer-2 {
@@ -85,9 +130,9 @@
 
 .modal-footer, .modal-footer-2 {
   display: flex;
-  justify-content: center; /* Centra il pulsante */
+  justify-content: center;
   align-items: center;
-  margin-top: 20px; /* Aggiunge spazio sopra il pulsante */
+  margin-top: 20px;
 }
 
 .custom-form-group {
@@ -100,60 +145,89 @@
   display: flex;
   align-items: center;
   font-weight: bold;
-  margin-right: 1rem; /* Spazio tra etichetta e input */
-  min-width: 100px; /* Larghezza minima dell'etichetta per l'allineamento */
+  margin-right: 1rem;
+  min-width: 100px;
 }
 
 .custom-form-group .form-label svg {
-  margin-right: 0.5rem; /* Spazio tra icona e testo */
+  margin-right: 0.5rem;
 }
 
 .custom-form-control {
   flex: 1;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.6); /* Linea più corta e meno scura */
-  border-radius: 0; /* Rimuove gli angoli arrotondati */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 0;
   padding-left: 0;
   padding-right: 0;
   box-shadow: none;
-  max-width: 22rem; /* Riduce la lunghezza massima della linea */
+  max-width: 22rem;
   font-size: 1.2rem;
 }
 
 .custom-form-control:focus {
-  border-bottom: 1px solid rgba(0, 123, 255, 0.6); /* Cambia il colore della linea quando il campo è in focus */
+  border-bottom: 1px solid rgba(0, 123, 255, 0.6);
   box-shadow: none;
 }
 
 .custom-form-control::placeholder {
-  color: #ccc; /* Colore del placeholder */
+  color: #ccc;
   font-size: 0.9rem;
 }
 
 .modal-footer button {
-  background-color: green; /* Colore del pulsante */
-  color: white; /* Colore del testo */
-  border: none; /* Rimuove il bordo */
-  padding: 10px 20px; /* Padding */
-  font-size: 16px; /* Dimensione del testo */
-  border-radius: 5px; /* Bordi arrotondati */
-  cursor: pointer; /* Cambia il cursore al passaggio */
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .modal-footer button:hover {
-  background-color: darkgreen; /* Colore al passaggio del mouse */
+  background-color: darkgreen;
 }
 
 .modal-footer-2 button {
-   background-color: 	#C8C8C8; /* Colore del pulsante */
-  color: white; /* Colore del testo */
-  border: none; /* Rimuove il bordo */
-  padding: 10px 20px; /* Padding */
-  font-size: 18px; /* Dimensione del testo */
-  border-radius: 5px; /* Bordi arrotondati */
-  cursor: pointer; /* Cambia il cursore al passaggio */
+   background-color: 	#C8C8C8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .modal-footer-2 button:hover {
-  background-color: darkgray; /* Colore al passaggio del mouse */
+  background-color: darkgray;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.add-customer-button {
+  margin-top: 10rem; 
+  background-color: #4CAF50; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-customer-button:hover {
+  background-color: #45a049;
 }
