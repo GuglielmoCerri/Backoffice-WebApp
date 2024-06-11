@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Login";
-import Customers from "./Customers";
+import Customers from "./Customers.tsx"; // Import with correct file extension
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
