@@ -1,10 +1,11 @@
 import os
+from flask import Flask
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from blueprint import my_blueprint
 
-from backend.db_schema import db
+from db_schema import db
 
 
 load_dotenv()

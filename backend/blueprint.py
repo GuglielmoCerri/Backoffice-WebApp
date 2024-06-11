@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_tok
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 
-from backend.db_schema import db, User, Customer
+from db_schema import db, User, Customer
 
 
 my_blueprint = Blueprint('my_blueprint', __name__)
