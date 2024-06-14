@@ -58,29 +58,12 @@ def refresh():
     return jsonify(access_token=access_token), 200
 
 # --------------------- CUSTOMERS ENDPOINT -----------------------------
-def apply_filters_and_pagination(query, request_args, sortable_fields):
-    for key, value in request_args.items():
-        if key in sortable_fields:
-            query = query.filter(getattr(Customer, key).like(f"%{value}%"))
-
-    sort_by = request_args.get('sort_by', None)
-    if sort_by in sortable_fields:
-        direction = request_args.get('direction', 'asc')
-        if direction == 'desc':
-            query = query.order_by(getattr(Customer, sort_by).desc())
-        else:
-            query = query.order_by(getattr(Customer, sort_by).asc())
-
-    page = int(request_args.get('page', 1))
-    per_page = int(request_args.get('per_page', 10))
-    return query.paginate(page=page, per_page=per_page)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @my_blueprint.route('/customers', methods=['GET'])
 def get_customers():
-    query = Customer.query
-    customers = apply_filters_and_pagination(query, request.args, ['name', 'email', 'phone', 'location', 'hobbies'])
-    return jsonify([customer.as_dict() for customer in customers.items])
+    customers = Customer.query.all()
+    return jsonify([customer.as_dict() for customer in customers])
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @my_blueprint.route('/customer/<int:id>', methods=['GET'])
