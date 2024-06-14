@@ -2,7 +2,7 @@ import React from 'react';
 import { X, Plus, UserRound, Mail, Phone, Map, Gamepad2 } from 'lucide-react';
 import { Form, Button } from 'react-bootstrap';
 
-function ModalCustomer({
+function CustomerModal({
   name, email, phone, location, hobbies,
   setName, setEmail, setPhone, setLocation, setHobbies,
   handleSubmit, handleClose, title
@@ -82,4 +82,4 @@ function ModalCustomer({
   );
 }
 
-export default ModalCustomer;
+export default CustomerModal;
