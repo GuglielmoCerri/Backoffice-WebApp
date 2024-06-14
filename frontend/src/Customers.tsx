@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import axios from 'axios';
 
 import './Customers.css';
 
@@ -17,18 +18,58 @@ import {
 } from '@tanstack/react-table';
 
 import { makeData, Customer } from './makeData.ts';
+import { Button, Modal } from 'react-bootstrap';
+import CustomerModal from './components/CustomerModal';
 
 const Customers = () => {
-  const [data, setData] = React.useState(() => makeData())
+  const [data, setData] = useState<Customer[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [location, setLocation] = useState('');
+  const [hobbies, setHobbies] = useState('');
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const customers = await makeData();
-      setData(customers);
-    };
-
+  useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
+
+  const fetchData = async () => {
+    const customers = await makeData();
+    setData(customers);
+  };
+
+  const handleAddCustomer = async () => {
+    try {
+      if (!name) {
+        alert('Name field is required!');
+        return;
+      }
+      if (!email) {
+        alert('Email field is required!');
+        return;
+      }
+      await axios.post('http://127.0.0.1:5000/customer', { name, email, phone, location, hobbies });
+      fetchData();
+      setShowAddModal(false);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setLocation('');
+      setHobbies('');
+    } catch (error) {
+      console.error('Error adding customer:', error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowAddModal(false);
+    setName('');
+    setEmail('');
+    setPhone('');
+    setLocation('');
+    setHobbies('');
+  };
 
   const columns = React.useMemo<ColumnDef<Customer>[]>(
     () => [
@@ -63,16 +104,32 @@ const Customers = () => {
     ],
     []
   );
-  
+
   return (
     <>
       <MyTable
-        {...{
-          data,
-          columns,
-        }}
+        data={data}
+        columns={columns}
       />
       <hr />
+      <Button className="add-button" variant="success" onClick={() => setShowAddModal(true)}>Add Customer</Button>
+      <Modal show={showAddModal} onHide={handleCloseModal}>
+        <CustomerModal
+          title="Add Customer"
+          name={name}
+          email={email}
+          phone={phone}
+          location={location}
+          hobbies={hobbies}
+          setName={setName}
+          setEmail={setEmail}
+          setPhone={setPhone}
+          setLocation={setLocation}
+          setHobbies={setHobbies}
+          handleSubmit={handleAddCustomer}
+          handleClose={handleCloseModal}
+        />
+      </Modal>
     </>
   );
 };
@@ -84,7 +141,7 @@ function MyTable({
   data: Customer[];
   columns: ColumnDef<Customer>[];
 }) {
-  const [pagination, setPagination] = React.useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
@@ -92,7 +149,6 @@ function MyTable({
   const table = useReactTable({
     columns,
     data,
-    debugTable: true,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -101,7 +157,6 @@ function MyTable({
     state: {
       pagination,
     },
-    // autoResetPageIndex: false, // turn off page index reset when sorting or filtering
   });
 
   return (
@@ -111,61 +166,45 @@ function MyTable({
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                return (
-                  <th key={header.id} colSpan={header.colSpan}>
-                    <div
-                      {...{
-                        className: header.column.getCanSort()
-                          ? 'cursor-pointer select-none'
-                          : '',
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{
-                        asc: ' 🔼',
-                        desc: ' 🔽',
-                      }[header.column.getIsSorted() as string] ?? null}
-                      {header.column.getCanFilter() ? (
-                        <div>
-                          <Filter column={header.column} table={table} />
-                        </div>
-                      ) : null}
-                    </div>
-                  </th>
-                );
-              })}
+              {headerGroup.headers.map(header => (
+                <th key={header.id} colSpan={header.colSpan}>
+                  <div
+                    className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    {{
+                      asc: ' 🔼',
+                      desc: ' 🔽',
+                    }[header.column.getIsSorted() as string] ?? null}
+                    {header.column.getCanFilter() && (
+                      <div>
+                        <Filter column={header.column} table={table} />
+                      </div>
+                    )}
+                  </div>
+                </th>
+              ))}
             </tr>
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => {
-            return (
-              <tr key={row.id}>
-                {row.getVisibleCells().map(cell => {
-                  return (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {table.getRowModel().rows.map(row => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map(cell => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
       <div className="h-2" />
       <div className="flex items-center gap-2">
         <button
           className="border rounded p-1"
-          onClick={() => table.firstPage()}
+          onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
         >
           {'<<'}
@@ -186,7 +225,7 @@ function MyTable({
         </button>
         <button
           className="border rounded p-1"
-          onClick={() => table.lastPage()}
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
         >
           {'>>'}
@@ -194,8 +233,7 @@ function MyTable({
         <span className="flex items-center gap-1">
           <div>Page</div>
           <strong>
-            {table.getState().pagination.pageIndex + 1} of{' '}
-            {table.getPageCount().toLocaleString()}
+            {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
           </strong>
         </span>
         <span className="flex items-center gap-1">
