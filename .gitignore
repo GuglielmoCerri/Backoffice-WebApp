@@ -57,3 +57,4 @@ backend/venv_mokka
 
 # Security
 .env
+backend/test.py
