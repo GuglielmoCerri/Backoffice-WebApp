@@ -3,7 +3,6 @@ import axios from 'axios';
 const fetchCustomers = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:5000/customers');
-      console.log(response.data)
       return response.data;
     } catch (error) {
       console.error('Error fetching customers:', error);
@@ -12,6 +11,7 @@ const fetchCustomers = async () => {
   };
 
 export type Customer = {
+  id: number
   name: string
   email: string
   phone: number
@@ -22,6 +22,7 @@ export type Customer = {
 
 const newCustomer = (data: Customer): Customer => {
     return {
+      id: data.id,
       name: data.name,
       email: data.email,
       phone: data.phone,
