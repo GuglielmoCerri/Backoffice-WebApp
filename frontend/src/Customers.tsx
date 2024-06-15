@@ -62,6 +62,16 @@ const Customers = () => {
     }
   };
 
+  const handleDeleteCustomer = async (id: string) => {
+    console.log('Deleting customer with ID:', id);
+    try {
+      await axios.delete(`http://127.0.0.1:5000/customer/${id}`);
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+    }
+  };
+
   const handleCloseModal = () => {
     setShowAddModal(false);
     setName('');
@@ -100,6 +110,18 @@ const Customers = () => {
         accessorKey: 'hobbies',
         header: 'Hobbies',
         footer: props => props.column.id,
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        cell: ({ row }) => {
+          return (
+            <div>
+              <Button variant="warning" className="mr-2">Edit</Button>
+              <Button variant="danger" onClick={() => handleDeleteCustomer(row.original.id)}>Delete</Button>
+            </div>
+          );
+        },
       },
     ],
     []
@@ -231,9 +253,8 @@ function MyTable({
           {'>>'}
         </button>
         <span className="flex items-center gap-1">
-          <div>Page</div>
           <strong>
-            {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
           </strong>
         </span>
         <span className="flex items-center gap-1">
