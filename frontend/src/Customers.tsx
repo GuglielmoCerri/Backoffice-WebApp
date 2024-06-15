@@ -24,6 +24,8 @@ import CustomerModal from './components/CustomerModal';
 const Customers = () => {
   const [data, setData] = useState<Customer[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -59,6 +61,22 @@ const Customers = () => {
       setHobbies('');
     } catch (error) {
       console.error('Error adding customer:', error);
+    }
+  };
+
+  const handleUpdateCustomer = async () => {
+    try {
+      await axios.put(`http://127.0.0.1:5000/customer/${selectedCustomer.id}`, { name, email, phone, location, hobbies });
+      fetchData();
+      setShowEditModal(false);
+      setSelectedCustomer(null);
+      setName('');
+      setEmail('');
+      setLocation('');
+      setHobbies('');
+      setPhone('');
+    } catch (error) {
+      console.error('Error updating customer:', error);
     }
   };
 
@@ -117,7 +135,15 @@ const Customers = () => {
         cell: ({ row }) => {
           return (
             <div>
-              <Button variant="warning" className="mr-2">Edit</Button>
+              <Button className="edit-button" variant="info" onClick={() => {
+            setSelectedCustomer(row.original);
+            setName(row.original.name);
+            setEmail(row.original.email);
+            setPhone(row.original.phone);
+            setLocation(row.original.location);
+            setHobbies(row.original.hobbies);
+            setShowEditModal(true);
+          }}>Edit</Button>{' '}
               <Button variant="danger" onClick={() => handleDeleteCustomer(row.original.id)}>Delete</Button>
             </div>
           );
@@ -150,6 +176,31 @@ const Customers = () => {
           setHobbies={setHobbies}
           handleSubmit={handleAddCustomer}
           handleClose={handleCloseModal}
+        />
+      </Modal>
+
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <CustomerModal
+          name={name}
+          email={email}
+          phone={phone}
+          location={location}
+          hobbies={hobbies}
+          setName={setName}
+          setEmail={setEmail}
+          setPhone={setPhone}
+          setLocation={setLocation}
+          setHobbies={setHobbies}
+          handleSubmit={handleUpdateCustomer}
+          handleClose={() => {
+            setShowEditModal(false);
+            setName('');
+            setEmail('');
+            setPhone('');
+            setLocation('');
+            setHobbies('');
+          }}
+          title="Edit Customer"
         />
       </Modal>
     </>
