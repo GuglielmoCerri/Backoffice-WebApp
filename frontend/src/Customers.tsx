@@ -116,17 +116,20 @@ const Customers = () => {
       },
       {
         accessorKey: 'phone',
-        header: () => 'Phone',
+        cell: info => info.getValue(),
+        header: () => <span>Phone</span>,
         footer: props => props.column.id,
       },
       {
         accessorKey: 'location',
+        cell: info => info.getValue(),
         header: () => <span>Location</span>,
         footer: props => props.column.id,
       },
       {
         accessorKey: 'hobbies',
-        header: 'Hobbies',
+        cell: info => info.getValue(),
+        header: () => <span>Hobbies</span>,
         footer: props => props.column.id,
       },
       {
@@ -135,16 +138,16 @@ const Customers = () => {
         cell: ({ row }) => {
           return (
             <div>
-              <Button className="edit-button" variant="info" onClick={() => {
-            setSelectedCustomer(row.original);
-            setName(row.original.name);
-            setEmail(row.original.email);
-            setPhone(row.original.phone);
-            setLocation(row.original.location);
-            setHobbies(row.original.hobbies);
-            setShowEditModal(true);
-          }}>Edit</Button>{' '}
-              <Button variant="danger" onClick={() => handleDeleteCustomer(row.original.id)}>Delete</Button>
+              <Button className="edit-button" onClick={() => {
+                setSelectedCustomer(row.original);
+                setName(row.original.name);
+                setEmail(row.original.email);
+                setPhone(row.original.phone);
+                setLocation(row.original.location);
+                setHobbies(row.original.hobbies);
+                setShowEditModal(true);
+              }}>Edit</Button>{' '}
+              <Button className="delete-button" onClick={() => handleDeleteCustomer(row.original.id)}>Delete</Button>
             </div>
           );
         },
@@ -154,13 +157,15 @@ const Customers = () => {
   );
 
   return (
-    <>
+    <div className="table-container">
+    <div className="table-wrapper">
       <MyTable
         data={data}
         columns={columns}
       />
-      <hr />
-      <Button className="add-button" variant="success" onClick={() => setShowAddModal(true)}>Add Customer</Button>
+      <Button className="add-button" onClick={() => setShowAddModal(true)}>Add Customer</Button>
+      </div>
+
       <Modal show={showAddModal} onHide={handleCloseModal}>
         <CustomerModal
           title="Add Customer"
@@ -203,7 +208,7 @@ const Customers = () => {
           title="Edit Customer"
         />
       </Modal>
-    </>
+    </div>
   );
 };
 
@@ -233,8 +238,7 @@ function MyTable({
   });
 
   return (
-    <div className="p-2">
-      <div className="h-2" />
+    <div>
       <table>
         <thead>
           {table.getHeaderGroups().map(headerGroup => (

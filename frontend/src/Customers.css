@@ -5,10 +5,11 @@ html {
 
 table {
   border: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 
 tbody {
-  border-bottom: 1px solid lightgray;
+  border-bottom: none; 
 }
 
 th {
@@ -25,35 +26,61 @@ tfoot th {
   font-weight: normal;
 }
 
-button:disabled {
-  opacity: 0.5;
+.table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding-top: 5em; 
+  padding-left: 12em;
 }
 
-.edit-button {
-  background-color: yellow;
-  color: black;
-  border: none;
-}
-
-.delete-button {
-  background-color: red;
-  color: white;
-  border: none;
+.table-wrapper {
+  width: 80%; 
+  display: flex;
+  flex-direction: column; 
 }
 
 .add-button {
-  position: absolute;
-  margin-top: 1em;
+  margin: 100px auto;
+  margin-top: 3em;
+  margin-left: 25em;
   background-color: green;
   color: white;
   border: none;
   padding: 10px 20px;
   font-size: 16px;
   border-radius: 5px;
+  left:50%;
 }
 
 .add-button:hover {
   background-color: darkgreen;
+}
+
+.edit-button, .delete-button {
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  font-size: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 5px; 
+}
+
+.edit-button {
+  background-color: blue;
+}
+
+.edit-button:hover {
+  background-color: darkblue;
+}
+
+.delete-button {
+  background-color: red;
+}
+
+.delete-button:hover {
+  background-color: darkred;
 }
 
 .modal-container {
