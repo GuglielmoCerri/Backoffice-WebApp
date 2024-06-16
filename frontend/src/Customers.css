@@ -43,7 +43,7 @@ tfoot th {
 .add-button {
   margin: 100px auto;
   margin-top: 3em;
-  margin-left: 25em;
+  margin-left: 1em;
   background-color: green;
   color: white;
   border: none;
@@ -53,8 +53,26 @@ tfoot th {
   left:50%;
 }
 
+.download-button {
+  margin: 100px auto;
+  margin-top: 3em;
+  margin-left: 20em;
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  left:50%;
+}
+
+
 .add-button:hover {
   background-color: darkgreen;
+}
+
+.download-button:hover {
+  background-color: darkorange;
 }
 
 .edit-button, .delete-button {

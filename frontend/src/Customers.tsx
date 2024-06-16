@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import axios from 'axios';
-
+import Papa from 'papaparse';
 import './Customers.css';
 
 import {
@@ -90,6 +90,18 @@ const Customers = () => {
     }
   };
 
+  const handleDownloadCSV = () => {
+    const csv = Papa.unparse(data);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Customers.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleCloseModal = () => {
     setShowAddModal(false);
     setName('');
@@ -163,8 +175,11 @@ const Customers = () => {
         data={data}
         columns={columns}
       />
-      <Button className="add-button" onClick={() => setShowAddModal(true)}>Add Customer</Button>
+      <div className="button-container">
+        <Button className="download-button" onClick={handleDownloadCSV}>Download CSV</Button>
+        <Button className="add-button" onClick={() => setShowAddModal(true)}>Add Customer</Button>
       </div>
+    </div>
 
       <Modal show={showAddModal} onHide={handleCloseModal}>
         <CustomerModal
