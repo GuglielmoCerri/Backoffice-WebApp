@@ -4,10 +4,10 @@ import axios from 'axios';
 import Papa from 'papaparse';
 import TablePagination from './TablePagination.tsx'; 
 import { ColumnDef} from '@tanstack/react-table';
-import { makeData, Customer } from './makeData.ts';
+import { makeData, Customer } from './makeDataCustomer.ts';
 import { Button, Modal } from 'react-bootstrap';
 import CustomerModal from './components/CustomerModal';
-import './Customers.css';
+import './Table.css';
 
 const Customers = () => {
   const [data, setData] = useState<Customer[]>([]);
