@@ -43,7 +43,7 @@ function ProductModal({
             <Form.Group controlId="formPrice" className="custom-form-group">
               <Form.Label><CircleDollarSign size={20} /> Price</Form.Label>
               <Form.Control 
-                type="text" 
+                type="number" 
                 value={price} 
                 onChange={(e) => setPrice(e.target.value)} 
                 placeholder="Enter price" 
@@ -63,7 +63,7 @@ function ProductModal({
             <Form.Group controlId="formStockQuantity" className="custom-form-group">
               <Form.Label><Tally5 size={20} /> Stock quantity</Form.Label>
               <Form.Control 
-                type="text" 
+                type="number" 
                 value={stock_quantity} 
                 onChange={(e) => setStockQuantity(e.target.value)} 
                 placeholder="Enter stock quantity" 
