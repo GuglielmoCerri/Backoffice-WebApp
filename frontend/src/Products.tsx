@@ -137,7 +137,7 @@ const Products = () => {
         header: 'Actions',
         cell: ({ row }) => {
           return (
-            <div>
+            <div className="actions-column">
               <Button className="edit-button" onClick={() => {
                 setSelectedProduct(row.original);
                 setName(row.original.name);

@@ -229,3 +229,6 @@ tfoot th {
   background-color: darkgray; 
 }
 
+.actions-column {
+  width: 10em; 
+}
