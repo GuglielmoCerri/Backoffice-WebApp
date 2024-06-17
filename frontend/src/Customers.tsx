@@ -7,9 +7,12 @@ import { ColumnDef} from '@tanstack/react-table';
 import { makeData, Customer } from './makeDataCustomer.ts';
 import { Button, Modal } from 'react-bootstrap';
 import CustomerModal from './components/CustomerModal';
+import { useNavigate } from "react-router-dom";
 import './Table.css';
 
 const Customers = () => {
+  const navigate = useNavigate();
+
   const [data, setData] = useState<Customer[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -23,6 +26,11 @@ const Customers = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+
+  const handleGoHome = () => {
+    navigate("/homepage");
+  }; 
 
   const fetchData = async () => {
     const customers = await makeData();
@@ -157,6 +165,10 @@ const Customers = () => {
   );
 
   return (
+    <div>
+    <div className="home-button-container">
+      <Button variant="primary" onClick={handleGoHome}>Home</Button>
+    </div>
     <div className="table-container">
     <div className="table-wrapper">
     <TablePagination data={data} columns={columns} />
@@ -209,16 +221,8 @@ const Customers = () => {
         />
       </Modal>
     </div>
+    </div>
   );
 };
-
-const rootElement = document.getElementById('root');
-if (!rootElement) throw new Error('Failed to find the root element');
-
-ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <Customers />
-  </React.StrictMode>
-);
 
 export default Customers;

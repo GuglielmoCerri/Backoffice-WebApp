@@ -7,9 +7,11 @@ import { ColumnDef} from '@tanstack/react-table';
 import { makeData, Product } from './makeDataProduct.ts';
 import { Button, Modal } from 'react-bootstrap';
 import ProductModal from './components/ProductModal';
+import { useNavigate } from "react-router-dom";
 import './Table.css';
 
 const Products = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState<Product[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -23,6 +25,11 @@ const Products = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+
+  const handleGoHome = () => {
+    navigate("/homepage");
+  }; 
 
   const fetchData = async () => {
     const products = await makeData();
@@ -157,6 +164,10 @@ const Products = () => {
   );
 
   return (
+    <div>
+    <div className="home-button-container">
+      <Button variant="primary" onClick={handleGoHome}>Home</Button>
+    </div>
     <div className="table-container">
     <div className="table-wrapper">
     <TablePagination data={data} columns={columns} />
@@ -209,16 +220,8 @@ const Products = () => {
         />
       </Modal>
     </div>
+    </div>
   );
 };
-
-const rootElement = document.getElementById('root');
-if (!rootElement) throw new Error('Failed to find the root element');
-
-ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
-    <Products />
-  </React.StrictMode>
-);
 
 export default Products;
