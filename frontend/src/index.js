@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Customers from "./Customers.tsx"; 
 import Products from "./Products.tsx"; 
+import Categories from "./Categories.tsx"; 
 import HomePage from "./HomePage"; 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -18,6 +19,7 @@ root.render(
         <Route path="homepage" element={<HomePage />} />
         <Route path="customers" element={<Customers />} />
         <Route path="products" element={<Products />} />
+        <Route path="categories" element={<Categories />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <Box textAlign="center" py={10} px={6}>
       <Heading as="h2" size="xl" mb={6}>
-        Admin Dashboard
+        Dashboard
       </Heading>
       <VStack spacing={4}>
         <Button leftIcon={<FaUsers />} colorScheme="teal" size="lg" onClick={() => navigate("/customers")}>
@@ -18,10 +18,10 @@ const HomePage = () => {
         <Button leftIcon={<FaBoxOpen />} colorScheme="teal" size="lg" onClick={() => navigate('/products')}>
             Manage Products
         </Button>
-        {/*<Button leftIcon={<FaTags />} colorScheme="teal" size="lg" onClick={() => navigate('/categories')}>
+        <Button leftIcon={<FaTags />} colorScheme="teal" size="lg" onClick={() => navigate('/categories')}>
             Manage Categories
         </Button>
-        <Button leftIcon={<FaChartBar />} colorScheme="teal" size="lg" onClick={() => navigate('/analytics')}>
+        {/*<Button leftIcon={<FaChartBar />} colorScheme="teal" size="lg" onClick={() => navigate('/analytics')}>
             View Analytics
         </Button>*/}
         </VStack>
