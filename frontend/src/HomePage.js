@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <Box textAlign="center" py={10} px={6}>
       <Heading as="h2" size="xl" mb={6}>
-        Dashboard
+        Home Page
       </Heading>
       <VStack spacing={4}>
         <Button leftIcon={<FaUsers />} colorScheme="teal" size="lg" onClick={() => navigate("/customers")}>
