@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 
 db = SQLAlchemy()
@@ -30,5 +31,17 @@ class Product(db.Model):
     category = db.Column(db.String(50), nullable=False)
     stock_quantity = db.Column(db.Integer, nullable=False, default=0)
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+# ---------------------------------------------------------------
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    updated_at = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
+    status = db.Column(db.Boolean, default=True)
+    
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
