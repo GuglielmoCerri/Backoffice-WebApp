@@ -31,7 +31,7 @@ tfoot th {
   flex-direction: column;
   align-items: center; 
   padding-top: 5em; 
-  padding-left: 10em;
+  padding-left: 6em;
 }
 
 .table-wrapper {
@@ -216,7 +216,7 @@ tfoot th {
 }
 
 .modal-footer-2 button {
-   background-color: 	#C8C8C8; 
+  background-color: 	#C8C8C8; 
   color: white; 
   border: none; 
   padding: 10px 20px; 
