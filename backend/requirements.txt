@@ -3,3 +3,4 @@ Flask-JWT-Extended
 Flask-SQLAlchemy
 Flask-Migrate
 python-dotenv
+pandas
