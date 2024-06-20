@@ -7,6 +7,7 @@ from endpoint.login_blueprint import login_blueprint
 from endpoint.customer_blueprint import customer_blueprint
 from endpoint.product_blueprint import product_blueprint
 from endpoint.category_blueprint import category_blueprint
+from endpoint.analytics_blueprint import analytics_blueprint
 from db_schema import db
 
 
@@ -21,6 +22,7 @@ app.register_blueprint(login_blueprint)
 app.register_blueprint(customer_blueprint)
 app.register_blueprint(product_blueprint)
 app.register_blueprint(category_blueprint)
+app.register_blueprint(analytics_blueprint)
 
 CORS(app)
 jwt = JWTManager(app)
