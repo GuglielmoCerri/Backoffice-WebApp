@@ -21,9 +21,9 @@ const HomePage = () => {
         <Button leftIcon={<FaTags />} colorScheme="teal" size="lg" onClick={() => navigate('/categories')}>
             Manage Categories
         </Button>
-        {/*<Button leftIcon={<FaChartBar />} colorScheme="teal" size="lg" onClick={() => navigate('/analytics')}>
+        <Button leftIcon={<FaChartBar />} colorScheme="teal" size="lg" onClick={() => navigate('/analytics')}>
             View Analytics
-        </Button>*/}
+        </Button>
         </VStack>
     </Box>
   );

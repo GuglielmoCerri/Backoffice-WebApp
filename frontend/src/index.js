@@ -8,6 +8,7 @@ import Customers from "./Customers.tsx";
 import Products from "./Products.tsx"; 
 import Categories from "./Categories.tsx"; 
 import HomePage from "./HomePage"; 
+import AnalyticsDashboard from "./AnalyticsDashboard.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,6 +21,7 @@ root.render(
         <Route path="customers" element={<Customers />} />
         <Route path="products" element={<Products />} />
         <Route path="categories" element={<Categories />} />
+        <Route path="analytics" element={<AnalyticsDashboard />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
