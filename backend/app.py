@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_caching import Cache
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -7,7 +8,6 @@ from endpoint.login_blueprint import login_blueprint
 from endpoint.customer_blueprint import customer_blueprint
 from endpoint.product_blueprint import product_blueprint
 from endpoint.category_blueprint import category_blueprint
-from endpoint.analytics_blueprint import analytics_blueprint
 from db_schema import db
 
 
@@ -22,10 +22,16 @@ app.register_blueprint(login_blueprint)
 app.register_blueprint(customer_blueprint)
 app.register_blueprint(product_blueprint)
 app.register_blueprint(category_blueprint)
-app.register_blueprint(analytics_blueprint)
 
 CORS(app)
 jwt = JWTManager(app)
+
+cache = Cache(config={'CACHE_TYPE': 'simple'}) 
+cache.init_app(app)
+
+# Register analytics_blueprint after initializing cache
+from endpoint.analytics_blueprint import analytics_blueprint
+app.register_blueprint(analytics_blueprint)
 
 # ------------------------------------------------
 if __name__ == '__main__':
