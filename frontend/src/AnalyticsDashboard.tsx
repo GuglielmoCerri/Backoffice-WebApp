@@ -1,27 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
-import { Container, Grid, Paper, Typography } from '@mui/material';
+import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { Container, Typography } from '@mui/material';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
   Filler,
-  
+  LineElement,
+  PointElement,
 } from 'chart.js';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend,
-  Filler 
+  Filler,
+  LineElement,
+  PointElement
 );
 
 interface CategoryData {
@@ -37,11 +42,32 @@ interface PriceRangeData {
   product_count: number;
 }
 
+interface LocationData {
+  label: string;
+  value: number;
+  color: string;
+}
+
+interface TopProductData {
+  product: string;
+  quantity: number;
+}
+
+interface TrendData {
+  date: string;
+  category: string;
+  takings: number;
+}
+
 const AnalyticsDashboard: React.FC = () => {
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
   const [priceRangeData, setPriceRangeData] = useState<PriceRangeData[]>([]);
+  const [locationData, setLocationData] = useState<LocationData[]>([]);
+  const [topProducts, setTopProducts] = useState<TopProductData[]>([]);
+  const [trendData, setTrendData] = useState<TrendData[]>([]);
   const categoryChartRef = useRef(null);
   const priceRangeChartRef = useRef(null);
+  const locationChartRef = useRef(null);
 
   const fetchCategoryData = async () => {
     try {
@@ -79,115 +105,219 @@ const AnalyticsDashboard: React.FC = () => {
     }
   };
 
+  const fetchLocationData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token is missing');
+        return;
+      }
+      const response = await axios.get('http://127.0.0.1:5000/analytics/customers_by_location', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setLocationData(response.data);
+    } catch (error) {
+      console.error('Error fetching location data:', error);
+    }
+  };
+
+  const fetchTopProductsData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token is missing');
+        return;
+      }
+      const response = await axios.get('http://127.0.0.1:5000/analytics/top_selled_products', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setTopProducts(response.data);
+    } catch (error) {
+      console.error('Error fetching top products data:', error);
+    }
+  };
+
+  const fetchTrendData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token is missing');
+        return;
+      }
+      const response = await axios.get('http://127.0.0.1:5000/analytics/trend', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setTrendData(response.data);
+    } catch (error) {
+      console.error('Error fetching trend data:', error);
+    }
+  };
+
   useEffect(() => {
     fetchCategoryData();
     fetchPriceRangeData();
+    fetchLocationData();
+    fetchTopProductsData();
+    fetchTrendData();
   }, []);
 
+  const categoryChartData = {
+    labels: categoryData.map((data) => data.category),
+    datasets: [
+      {
+        label: 'Average Price',
+        data: categoryData.map((data) => data.average_price),
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Total Stock',
+        data: categoryData.map((data) => data.total_stock),
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const priceRangeChartData = {
+    labels: priceRangeData.map((data) => data.price_range),
+    datasets: [
+      {
+        label: 'Product Count',
+        data: priceRangeData.map((data) => data.product_count),
+        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+        borderColor: 'rgba(255, 159, 64, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const locationChartData = {
+    labels: locationData.map((data) => data.label),
+    datasets: [
+      {
+        data: locationData.map((data) => data.value),
+        backgroundColor: locationData.map((data) => data.color),
+        hoverBackgroundColor: locationData.map((data) => data.color),
+      },
+    ],
+  };
+
+  const totalQuantity = topProducts.reduce((sum, product) => sum + product.quantity, 0);
+  const colors = ['#845EC2', '#D65DB1', '#FF6F91', '#FF9671', '#FFC75F'];
+
+  const categories = [...new Set(trendData.map(data => data.category))];
+  
+  const categoryColors = {
+    'Technology': '#B39CD0', 
+    'Home': 'rgba(54, 162, 235, 0.6)', 
+    'Clothing': 'rgba(75, 192, 192, 0.6)',  
+  };
+
+  const trendChartData = {
+    labels: [...new Set(trendData.map(data => data.date))], 
+    datasets: categories.map(category => ({
+      label: category,
+      data: trendData.filter(data => data.category === category).map(data => data.takings),
+      borderColor: categoryColors[category],
+      backgroundColor: categoryColors[category],
+      fill: false,
+    })),
+  };
+
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Analytics Dashboard
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <Paper>
-            <Typography variant="h6" gutterBottom>
-              Products by Category
-            </Typography>
-            <Bar
-              ref={categoryChartRef}
-              data={{
-                labels: categoryData.map((data) => data.category),
-                datasets: [
-                  {
-                    label: 'Average Price',
-                    data: categoryData.map((data) => data.average_price),
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                  },
-                  {
-                    label: 'Total Revenue',
-                    data: categoryData.map((data) => data.total_revenue),
-                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
-                  },
-                  {
-                    label: 'Product Count',
-                    data: categoryData.map((data) => data.product_count),
-                    backgroundColor: 'rgba(255, 159, 64, 0.6)',
-                  },
-                  {
-                    label: 'Total Stock',
-                    data: categoryData.map((data) => data.total_stock),
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                  },
-                ],
-              }}
-              options={{
+    <Container className="mx-auto p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white p-4 rounded shadow">
+          <Typography variant="h5" component="h3" className="mb-4 text-center">
+            Category Data
+          </Typography>
+          <Bar ref={categoryChartRef} 
+               data={categoryChartData} 
+               options={{
                 scales: {
-                  x: {
-                    grid: {
-                      display: false, 
-                    },
+                  x: { grid: {display: true}},
+                  y: { grid: {display: false},
                   },
-                  y: {
-                    grid: {
-                      display: false, 
-                    },
-                  },
-                },
-                plugins: {
-                  legend: {
-                    display: true,
-                  },
-                },
-                maintainAspectRatio: true,
-                responsive: true,
-              }}
-            />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper>
-            <Typography variant="h6" gutterBottom>
-              Products by Price Range
-            </Typography>
-            <Bar
-              ref={priceRangeChartRef}
-              data={{
-                labels: priceRangeData.map((data) => data.price_range),
-                datasets: [
-                  {
-                    label: 'Product Count',
-                    data: priceRangeData.map((data) => data.product_count),
-                    backgroundColor: 'rgba(255, 206, 86, 0.6)',
-                  },
-                ],
-              }}
-              options={{
+                }
+              }}/>
+        </div>
+        <div className="bg-white p-4 rounded shadow">
+          <Typography variant="h5" component="h3" className="mb-4 text-center">
+            Price Range Data
+          </Typography>
+          <Bar ref={priceRangeChartRef} 
+               data={priceRangeChartData} 
+               options={{
                 scales: {
-                  x: {
-                    grid: {
-                      display: false, 
-                    },
+                  x: { grid: {display: true}},
+                  y: { grid: {display: false},
                   },
-                  y: {
-                    grid: {
-                      display: false, 
-                    },
-                  },
-                },
-                plugins: {
-                  legend: {
-                    display: true,
-                  },
-                },
-                maintainAspectRatio: true,
-                responsive: true,
-              }}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
+                }
+              }}/>
+        </div>
+      </div>
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white p-4 rounded shadow col-span-1 md:col-span-1">
+          <Typography variant="h5" component="h3" className="mb-4 text-center">
+            Customers by Location
+          </Typography>
+          <div className="w-1/2 mx-auto">
+            <Doughnut ref={locationChartRef} 
+                      data={locationChartData}
+                      options={{
+                        plugins: {
+                          legend: {
+                            position: 'bottom',
+                            align: 'center',
+                            fullSize: true,
+                          },
+                        },
+                      }}  />
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded shadow col-span-1 md:col-span-1">
+          <Typography variant="h5" component="h3" className="mb-4 text-center">
+            Top Products
+          </Typography>
+          {topProducts.map((product, index) => (
+            <div key={product.product} className="mb-2">
+              <Typography variant="h6">{product.product}</Typography>
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div
+                  className="h-2.5 rounded-full"
+                  style={{ width: `${(product.quantity / totalQuantity) * 100}%`, backgroundColor: colors[index % colors.length] }}
+                ></div>
+              </div>
+              <Typography variant="body2">Popularity: {(product.quantity / totalQuantity * 100).toFixed(2)}%</Typography>
+            </div>
+          ))}
+        </div>
+      </div>
+        <div className="bg-white p-4 rounded shadow">
+          <Typography variant="h5" component="h3" className="mb-4 text-center">
+            Monthly Takings by Category Over The Last Year
+          </Typography>
+          <Line data={trendChartData} options={{
+            scales: {
+              x: { grid: { display: true } },
+              y: { grid: { display: true } }
+            },
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }} />
+        </div>
     </Container>
   );
 };
