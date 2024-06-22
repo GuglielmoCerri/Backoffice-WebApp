@@ -45,3 +45,14 @@ class Category(db.Model):
     
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+# ---------------------------------------------------------------
+class Sale(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    product = db.Column(db.String(80), nullable=False)
+    customer = db.Column(db.String(80), nullable=False)
+    date = db.Column(db.DateTime)
+    quantity = db.Column(db.Integer, nullable=False, default=0)
+    
+    def as_dict(self):
+        return {c.id: getattr(self, c.id) for c in self.__table__.columns}
