@@ -1,11 +1,15 @@
+#%%
 import os
 import sys; sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required
+from datetime import datetime
 from collections import Counter
 import pandas as pd
 import matplotlib.pyplot as plt
-from db_schema import Customer, Product
+from db_schema import Customer, Product, Sale
+from app import cache
+#%%
 
 analytics_blueprint = Blueprint('analytics_blueprint', __name__)
 
@@ -58,3 +62,43 @@ def get_customers_by_location():
         location["color"] = color_hex[i % len(color_hex)]
 
     return jsonify(location_percentages)
+
+@cache.cached(timeout=600)  # Cache this function for 600 seconds (10 minutes)
+def fetch_sales_join_products():
+    sales = Sale.query.all()
+    sales_data = [{'product': p.product, 'date': p.date, 'quantity': p.quantity} for p in sales]
+    df_sales = pd.DataFrame(sales_data)
+
+    products = Product.query.all()
+    products_data = [{'name': p.name, 'category': p.category, 'price': p.price, 'stock_quantity': p.stock_quantity} for p in products]
+    df_products = pd.DataFrame(products_data)
+    df_products.rename({'name': 'product'}, axis=1, inplace=True)
+
+    merge = df_sales.merge(df_products, on='product')
+    merge['takings'] = merge['price'] * merge['quantity']
+
+    return merge
+
+@analytics_blueprint.route('/analytics/top_selled_products', methods=['GET'])
+def get_top_selled_products():
+    merge = fetch_sales_join_products()
+
+    grouped_df = merge[['product','quantity']].groupby('product').agg({
+        'quantity': 'sum',
+    }).reset_index()  
+    grouped_df.sort_values("quantity",inplace=True,ascending=False)
+
+    return jsonify(grouped_df.head(5).to_dict(orient='records'))
+
+@analytics_blueprint.route('/analytics/trend', methods=['GET'])
+def get_trend():
+    merge = fetch_sales_join_products()
+
+    merge = merge[['date','category','takings']]
+    merge['date'] = merge['date'].dt.strftime('%Y-%m')
+
+    current_year = str(datetime.now().year)
+    merge = merge[merge['date'].str.startswith(current_year)]
+    merge.sort_values("date",inplace=True)
+
+    return jsonify(merge.to_dict(orient='records'))
