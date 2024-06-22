@@ -53,6 +53,7 @@ debug/
 *.bak
 *.swp
 *.temp
+*.ipynb
 backend/venv_mokka
 
 # Security
