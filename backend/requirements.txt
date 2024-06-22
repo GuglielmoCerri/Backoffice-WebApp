@@ -4,3 +4,5 @@ Flask-SQLAlchemy
 Flask-Migrate
 python-dotenv
 pandas
+Faker
+Flask-Caching
