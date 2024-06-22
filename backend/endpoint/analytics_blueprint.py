@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required
 from collections import Counter
 import pandas as pd
+import matplotlib.pyplot as plt
 from db_schema import Customer, Product
 
 analytics_blueprint = Blueprint('analytics_blueprint', __name__)
@@ -41,13 +42,19 @@ def products_by_price_range():
 @analytics_blueprint.route('/analytics/customers_by_location', methods=['GET'])
 def get_customers_by_location():
     customers = Customer.query.all()
-    locations = [customer.location for customer in customers]
+    locations = [customer.location.capitalize() for customer in customers]
     location_count = Counter(locations)
     total_customers = len(customers)
     
     location_percentages = [
-        {'label': location, 'value': (count / total_customers) * 100}
+        {'label': location, 'value': round((count / total_customers) * 100,2)}
         for location, count in location_count.items()
     ]
     
+    colors = plt.get_cmap('tab20').colors
+    color_hex = ['#%02x%02x%02x' % (int(r*255), int(g*255), int(b*255)) for r, g, b in colors]
+
+    for i, location in enumerate(location_percentages):
+        location["color"] = color_hex[i % len(color_hex)]
+
     return jsonify(location_percentages)
