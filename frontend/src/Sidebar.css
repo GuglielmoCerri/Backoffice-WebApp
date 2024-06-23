@@ -1,0 +1,30 @@
+.ps-sidebar-root{
+    position: sticky !important;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border: 0 !important;
+}
+
+.ps-menu-root{
+    color: #3598E5 !important;
+}
+
+.ps-menu-button:hover {
+    background-color: #C5E4FF  !important;
+}
+
+.ps-submenu-content {
+    color: #3598E5 !important;
+    background-color: #FBFBFB  !important;
+}
+
+.sidebar-toggle {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 1px;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: #3598E5;
+  }
