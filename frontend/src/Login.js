@@ -58,7 +58,7 @@ const Login = () => {
       localStorage.setItem('token', access_token);
       localStorage.setItem('tokenExpiration', tokenExpiration);
       localStorage.setItem("authenticated", true);
-      navigate("/homepage");
+      navigate("/analytics");
       verifyToken();
       refreshToken();
     } catch (error) {
