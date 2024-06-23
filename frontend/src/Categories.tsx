@@ -6,12 +6,13 @@ import { ColumnDef } from '@tanstack/react-table';
 import { makeData, Category } from './makeDataCategory.ts';
 import { Button, Modal } from 'react-bootstrap';
 import CategoryModal from './components/CategoryModal';
-import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import { FaTable, FaChartPie, FaSignOutAlt, FaUsers, FaBox, FaTags} from 'react-icons/fa';
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import './Table.css';
 
 const Categories = () => {
-  const navigate = useNavigate();
-
   const [data, setData] = useState<Category[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -21,14 +22,11 @@ const Categories = () => {
   const [status, setStatus] = useState(false);
   const [createdAt, setCreatedAt] = useState('');
   const [updatedAt, setUpdatedAt] = useState('');
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  const handleGoHome = () => {
-    navigate("/homepage");
-  };
 
   const fetchData = async () => {
     const categories = await makeData();
@@ -152,11 +150,29 @@ const Categories = () => {
     []
   );
 
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
+  const collapseIcon = collapsed ? <MdOutlineKeyboardArrowRight /> : <MdOutlineKeyboardArrowLeft />;
+
   return (
-    <div>
-      <div className="home-button-container">
-        <Button variant="primary" onClick={handleGoHome}>Home</Button>
-      </div>
+    <div style={{ display: 'flex', height: '100%' }}>
+      <div>
+    <Sidebar collapsed={collapsed}>
+          <Menu closeOnClick>
+            <SubMenu label="Tables" icon={<FaTable />}>
+              <MenuItem component={<Link to="/customers" />} icon={<FaUsers />}>Customers</MenuItem>
+              <MenuItem component={<Link to="/products" />} icon={<FaBox />}>Products</MenuItem>
+              <MenuItem component={<Link to="/categories" />} icon={<FaTags />}>Categories</MenuItem>
+            </SubMenu>
+            <MenuItem component={<Link to="/analytics" />} icon={<FaChartPie />}>Dashboard</MenuItem>
+            <MenuItem component={<Link to="/login" />} icon={<FaSignOutAlt />}>LogOut</MenuItem>
+          </Menu>
+          <div onClick={toggleSidebar} className="sidebar-toggle">
+            {collapseIcon}
+          </div>
+        </Sidebar>
+    </div>
       <div className="table-container">
         <div className="table-wrapper">
           <TablePagination data={data} columns={columns} />
