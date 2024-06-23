@@ -35,9 +35,10 @@ tfoot th {
 }
 
 .table-wrapper {
-  width: 80%; 
+  width: 100%; 
   display: flex;
   flex-direction: column; 
+  margin: auto;
 }
 
 .add-button {
@@ -227,8 +228,4 @@ tfoot th {
 
 .modal-footer-2 button:hover {
   background-color: darkgray; 
-}
-
-.actions-column {
-  width: 10em; 
 }
