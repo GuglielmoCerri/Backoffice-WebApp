@@ -2,6 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { Container, Typography } from '@mui/material';
+import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
+import { Link } from 'react-router-dom';
+import { FaTable, FaChartPie, FaSignOutAlt, FaUsers, FaBox, FaTags} from 'react-icons/fa';
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import './Sidebar.css'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -65,6 +70,7 @@ const AnalyticsDashboard: React.FC = () => {
   const [locationData, setLocationData] = useState<LocationData[]>([]);
   const [topProducts, setTopProducts] = useState<TopProductData[]>([]);
   const [trendData, setTrendData] = useState<TrendData[]>([]);
+  const [collapsed, setCollapsed] = useState(false);
   const categoryChartRef = useRef(null);
   const priceRangeChartRef = useRef(null);
   const locationChartRef = useRef(null);
@@ -233,7 +239,29 @@ const AnalyticsDashboard: React.FC = () => {
     })),
   };
 
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
+  const collapseIcon = collapsed ? <MdOutlineKeyboardArrowRight /> : <MdOutlineKeyboardArrowLeft />;
+
   return (
+    <div style={{ display: 'flex', height: '100%' }}>
+    <div>
+    <Sidebar collapsed={collapsed}>
+          <Menu closeOnClick>
+            <SubMenu label="Tables" icon={<FaTable />}>
+              <MenuItem component={<Link to="/customers" />} icon={<FaUsers />}>Customers</MenuItem>
+              <MenuItem component={<Link to="/products" />} icon={<FaBox />}>Products</MenuItem>
+              <MenuItem component={<Link to="/categories" />} icon={<FaTags />}>Categories</MenuItem>
+            </SubMenu>
+            <MenuItem component={<Link to="/analytics" />} icon={<FaChartPie />}>Dashboard</MenuItem>
+            <MenuItem component={<Link to="/login" />} icon={<FaSignOutAlt />}>LogOut</MenuItem>
+          </Menu>
+          <div onClick={toggleSidebar} className="sidebar-toggle">
+            {collapseIcon}
+          </div>
+        </Sidebar>
+    </div>
     <Container className="mx-auto p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-4 rounded shadow">
@@ -319,6 +347,7 @@ const AnalyticsDashboard: React.FC = () => {
           }} />
         </div>
     </Container>
+    </div>
   );
 };
 
