@@ -79,7 +79,7 @@ const Login = () => {
 
   return (
     <div className="login-box">
-      <h2>{isRegistering ? 'Register' : 'Login'} Form</h2>
+      <h2 className="text-xl mb-5 text-gray-800">{isRegistering ? 'Register' : 'Login'}</h2>
       <form onSubmit={isRegistering ? handleRegister : handleLogin}>
         <div className="textbox">
           <label htmlFor="username">Username:</label>
@@ -92,8 +92,8 @@ const Login = () => {
             required
           />
         </div>
-        <div className="textbox">
-          <label htmlFor="password">Password:</label>
+        <div className="textbox password-container">
+          <label htmlFor="password" >Password:</label>
           <input
             type={showPassword ? 'text' : 'password'}
             id="password"
@@ -120,9 +120,9 @@ const Login = () => {
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
           />
-          <label htmlFor="rememberMe">Remember</label>
+          <label htmlFor="rememberMe">Remember me</label>
         </div>
-        <button type="submit" className="btn">{isRegistering ? 'Register' : 'Login'}</button>
+        <button type="submit" className="btn">{isRegistering ? 'Register' : 'Sign in'}</button>
       </form>
       <button onClick={() => setIsRegistering(!isRegistering)} className="btn-switch">
         {isRegistering ? 'Switch to Login' : 'Switch to Register'}
