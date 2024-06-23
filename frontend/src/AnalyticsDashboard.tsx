@@ -6,7 +6,7 @@ import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import { FaTable, FaChartPie, FaSignOutAlt, FaUsers, FaBox, FaTags} from 'react-icons/fa';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
-import './Sidebar.css'
+import './style/Sidebar.css'
 import {
   Chart as ChartJS,
   CategoryScale,

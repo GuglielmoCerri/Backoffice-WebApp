@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { FaTable, FaChartPie, FaSignOutAlt, FaUsers, FaBox, FaTags} from 'react-icons/fa';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from "react-icons/md";
-import './Table.css';
-import './Sidebar.css'
+import './style/Table.css';
+import './style/Sidebar.css'
 
 const Customers = () => {
   const [data, setData] = useState<Customer[]>([]);
