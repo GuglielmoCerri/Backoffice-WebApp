@@ -1,13 +1,16 @@
 import os
 import sys; sys.path.insert(1, os.path.join(sys.path[0], '..'))
+import jwt
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, create_refresh_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 from db_schema import db, User
+from dotenv import load_dotenv
 
 
 login_blueprint = Blueprint('login_blueprint', __name__)
+load_dotenv()
 
 # --------------------- AUTHENTICATION ENDPOINT ---------------------------
 
@@ -46,11 +49,16 @@ def register():
         return jsonify({"message": "Error creating user", "error": str(e)}), 500
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@login_blueprint.route('/verify', methods=['GET'])
-@jwt_required()
-def verify():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+@login_blueprint.route('/verify-token', methods=['POST'])
+def verify_token():
+    token = request.get_json().get('token')
+    try:
+        jwt.decode(token, os.getenv('JWT_SECRET_KEY'), algorithms=['HS256'])
+        return jsonify({'valid': True})
+    except jwt.ExpiredSignatureError:
+        return jsonify({'valid': False, 'error': 'Token expired'})
+    except jwt.InvalidTokenError:
+        return jsonify({'valid': False, 'error': 'Invalid token'})
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 @login_blueprint.route('/refresh', methods=['POST'])
