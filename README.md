@@ -5,6 +5,10 @@
 ![React](https://img.shields.io/badge/React-18.3.1-orange)
 ![Flask](https://img.shields.io/badge/Flask-3.0.3-green)
 
+<p align="center">
+  <img src="webapp.gif" alt="Description of GIF">
+</p>
+
 ## About
 This repository contains the codebase for a Backoffice Web Application designed for managing various administrative tasks for an e-commerce. The project is structured into backend and frontend components. It uses React for the frontend and Flask for the backend. Data is stored using SQLAlchemy for database interactions with SQLite.
 
