@@ -12,9 +12,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
-  const [authenticated, setauthenticated] = useState(
-    localStorage.getItem(localStorage.getItem("authenticated") || false)
-  );
 
   const verifyToken = async () => {
     const token = localStorage.getItem('token');
@@ -51,18 +48,19 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', {username, password});
+      const response = await axios.post('http://127.0.0.1:5000/login', { username, password });
       const { access_token } = response.data;
-      // 7 days if 'Remember Me' is True, otherwise 30 minutes
-      const tokenExpiration = rememberMe ? Date.now() + (1000 * 60 * 60 * 24 * 7) : Date.now() + (1000 * 60 * 30); 
+      const tokenExpiration = rememberMe ? Date.now() + (1000 * 60 * 60 * 24 * 7) : Date.now() + (1000 * 60 * 30);
       localStorage.setItem('token', access_token);
       localStorage.setItem('tokenExpiration', tokenExpiration);
-      localStorage.setItem("authenticated", true);
-      navigate("/analytics");
-      verifyToken();
-      refreshToken();
+      localStorage.setItem('authenticated', 'true');
+      navigate('/analytics');
     } catch (error) {
-      alert('Login failed');
+      if (error.response && error.response.data) {
+        alert(error.response.data.message || 'Login failed');
+      } else {
+        alert('An unexpected error occurred');
+      }
     }
   };
 
