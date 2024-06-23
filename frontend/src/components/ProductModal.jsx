@@ -67,7 +67,7 @@ function ProductModal({
                 value={stock_quantity} 
                 onChange={(e) => setStockQuantity(e.target.value)} 
                 placeholder="Enter stock quantity" 
-                className="custom-form-control"
+                className="custom-form-control custom-form-control-stock"
               />
             </Form.Group>
           </Form>

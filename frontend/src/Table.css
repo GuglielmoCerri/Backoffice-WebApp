@@ -172,7 +172,7 @@ tfoot th {
   display: flex;
   align-items: center;
   font-weight: bold;
-  margin-right: 1rem; 
+  margin-right: 2.3rem; 
   min-width: 100px; 
 }
 
@@ -191,6 +191,15 @@ tfoot th {
   max-width: 22rem; 
   font-size: 1.2rem;
 }
+
+.custom-form-group-stock .form-label {
+  margin-right: 1rem; 
+}
+
+.custom-form-control-stock {
+  margin-left: -1.6rem; 
+}
+
 
 .custom-form-control:focus {
   border-bottom: 1px solid rgba(0, 123, 255, 0.6);
