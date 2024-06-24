@@ -13,9 +13,8 @@ jobs:
       - name: Build and push the image
         run: |
           docker login --username GuglielmoCerri --password ${{ secrets.GH_PAT }} ghcr.io
-          docker-compose build
-          docker tag backoffice-frontend:latest ghcr.io/guglielmocerri/backoffice-frontend:latest
-          docker tag backoffice-backend:latest ghcr.io/guglielmocerri/backoffice-backend:latest
+          docker build frontend -t ghcr.io/guglielmocerri/backoffice-frontend:latest
+          docker build backend -t ghcr.io/guglielmocerri/backoffice-backend:latest
           docker push ghcr.io/guglielmocerri/backoffice-frontend:latest
           docker push ghcr.io/guglielmocerri/backoffice-backend:latest
       
