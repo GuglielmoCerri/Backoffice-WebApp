@@ -124,6 +124,30 @@ Follow these steps to install and run the application.
 
 The application will be available at `http://localhost:3000`.
 
+## Docker
+
+To use Docker for this project, follow these steps:
+
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/GuglielmoCerri/Backoffice-WebApp.git
+    cd Backoffice-WebApp
+    ```
+
+3. **Build Docker images:**
+    ```bash
+    docker compose up --build
+    ```
+
+4. **Access the application:**
+    - Frontend: `http://localhost:3000`
+    - Backend: `http://localhost:5000`
+
+**Note for Mac Users:** Port 5000 may conflict with AirPlay Receiver. Resolve this by either:
+- Changing the backend port in `docker-compose.yml`.
+- Disabling AirPlay Receiver in system settings.
+
+
 ## Contributions
 
 Contributions are welcome! Please open an issue or a pull request for improvements and bug fixes.
