@@ -147,6 +147,11 @@ To use Docker for this project, follow these steps:
 - Changing the backend port in `docker-compose.yml`.
 - Disabling AirPlay Receiver in system settings.
 
+## Continuous Integration and Deployment (CI/CD)
+
+This project employs GitHub Actions for Continuous Integration (CI) and Continuous Deployment (CD). The CI/CD pipeline automates the process of building and deploying the application. Docker images, for the frontend and backend, are built and pushed to the GitHub Container Registry (GHCR), ensuring streamlined and efficient deployment.
+
+With this setup, any code changes pushed to the main branch trigger the pipeline, ensuring that the application remains up-to-date and minimizing the risk of manual errors during deployment.
 
 ## Contributions
 
