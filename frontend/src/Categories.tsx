@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from './axiosConfig';
 import Papa from 'papaparse';
 import TablePagination from './TablePagination.tsx';
 import { ColumnDef } from '@tanstack/react-table';
@@ -40,7 +40,7 @@ const Categories = () => {
         alert('Name field is required!');
         return;
       }
-      await axios.post('http://127.0.0.1:5000/category', { name, description, status });
+      await axios.post('/category', { name, description, status });
       fetchData();
       setShowAddModal(false);
       setName('');
@@ -53,7 +53,7 @@ const Categories = () => {
 
   const handleUpdateCategory = async () => {
     try {
-      await axios.put(`http://127.0.0.1:5000/category/${selectedCategory?.id}`, { name, description, status });
+      await axios.put(`/category/${selectedCategory?.id}`, { name, description, status });
       fetchData();
       setShowEditModal(false);
       setSelectedCategory(null);
@@ -68,7 +68,7 @@ const Categories = () => {
   const handleDeleteCategory = async (id: number) => {
     console.log('Deleting category with ID:', id);
     try {
-      await axios.delete(`http://127.0.0.1:5000/category/${id}`);
+      await axios.delete(`/category/${id}`);
       fetchData();
     } catch (error) {
       console.error('Error deleting category:', error);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from './axiosConfig';
 import Papa from 'papaparse';
 import TablePagination from './TablePagination.tsx'; 
 import { ColumnDef} from '@tanstack/react-table';
@@ -44,7 +44,7 @@ const Customers = () => {
         alert('Email field is required!');
         return;
       }
-      await axios.post('http://127.0.0.1:5000/customer', { name, email, phone, location, hobbies });
+      await axios.post('/customer', { name, email, phone, location, hobbies });
       fetchData();
       setShowAddModal(false);
       setName('');
@@ -59,7 +59,7 @@ const Customers = () => {
 
   const handleUpdateCustomer = async () => {
     try {
-      await axios.put(`http://127.0.0.1:5000/customer/${selectedCustomer.id}`, { name, email, phone, location, hobbies });
+      await axios.put(`/customer/${selectedCustomer.id}`, { name, email, phone, location, hobbies });
       fetchData();
       setShowEditModal(false);
       setSelectedCustomer(null);
@@ -76,7 +76,7 @@ const Customers = () => {
   const handleDeleteCustomer = async (id: string) => {
     console.log('Deleting customer with ID:', id);
     try {
-      await axios.delete(`http://127.0.0.1:5000/customer/${id}`);
+      await axios.delete(`/customer/${id}`);
       fetchData();
     } catch (error) {
       console.error('Error deleting customer:', error);

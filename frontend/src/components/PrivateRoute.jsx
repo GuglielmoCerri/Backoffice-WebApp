@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axiosConfig';
 
 const PrivateRoute = ({ Component }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,7 +11,7 @@ const PrivateRoute = ({ Component }) => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.post('http://127.0.0.1:5000/verify-token', { token });
+          const response = await axios.post('/verify-token', { token });
           if (response.data.valid) {
             setIsAuthenticated(true);
           } else {

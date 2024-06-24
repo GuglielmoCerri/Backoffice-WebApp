@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
+import axios from './axiosConfig';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
 import { Container, Typography } from '@mui/material';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
@@ -82,7 +82,7 @@ const AnalyticsDashboard: React.FC = () => {
         console.error('Token is missing');
         return;
       }
-      const response = await axios.get('http://127.0.0.1:5000/analytics/products_by_category', {
+      const response = await axios.get('/analytics/products_by_category', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -100,7 +100,7 @@ const AnalyticsDashboard: React.FC = () => {
         console.error('Token is missing');
         return;
       }
-      const response = await axios.get('http://127.0.0.1:5000/analytics/products_by_price_range', {
+      const response = await axios.get('/analytics/products_by_price_range', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -118,7 +118,7 @@ const AnalyticsDashboard: React.FC = () => {
         console.error('Token is missing');
         return;
       }
-      const response = await axios.get('http://127.0.0.1:5000/analytics/customers_by_location', {
+      const response = await axios.get('/analytics/customers_by_location', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -136,7 +136,7 @@ const AnalyticsDashboard: React.FC = () => {
         console.error('Token is missing');
         return;
       }
-      const response = await axios.get('http://127.0.0.1:5000/analytics/top_selled_products', {
+      const response = await axios.get('/analytics/top_selled_products', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -154,7 +154,7 @@ const AnalyticsDashboard: React.FC = () => {
         console.error('Token is missing');
         return;
       }
-      const response = await axios.get('http://127.0.0.1:5000/analytics/trend', {
+      const response = await axios.get('/analytics/trend', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

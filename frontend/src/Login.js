@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './style/Login.css'; 
 import { useNavigate } from "react-router-dom";
+import axios from './axiosConfig';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Login = () => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/verify', {
+        const response = await axios.get('/verify', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -33,7 +33,7 @@ const Login = () => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const response = await axios.post('http://127.0.0.1:5000/refresh', {
+        const response = await axios.post('/refresh', {
           refresh_token: token
         });
         const newAccessToken = response.data.access_token;
@@ -48,7 +48,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', { username, password });
+      const response = await axios.post('/login', { username, password });
       const { access_token } = response.data;
       const tokenExpiration = rememberMe ? Date.now() + (1000 * 60 * 60 * 24 * 7) : Date.now() + (1000 * 60 * 30);
       localStorage.setItem('token', access_token);
@@ -67,7 +67,7 @@ const Login = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/register', {username, password});
+      const response = await axios.post('/register', {username, password});
       alert('Registration successful!');
       setIsRegistering(false);
     } catch (error) {

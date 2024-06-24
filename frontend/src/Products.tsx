@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from './axiosConfig';
 import Papa from 'papaparse';
 import TablePagination from './TablePagination.tsx'; 
 import { ColumnDef} from '@tanstack/react-table';
@@ -44,7 +44,7 @@ const Products = () => {
         alert('Price field is required!');
         return;
       }
-      await axios.post('http://127.0.0.1:5000/product', { name, description, price, category, stock_quantity });
+      await axios.post('/product', { name, description, price, category, stock_quantity });
       fetchData();
       setShowAddModal(false);
       setName('');
@@ -59,7 +59,7 @@ const Products = () => {
 
   const handleUpdateProduct = async () => {
     try {
-      await axios.put(`http://127.0.0.1:5000/product/${selectedProduct.id}`, { name, description, price, category, stock_quantity });
+      await axios.put(`/product/${selectedProduct.id}`, { name, description, price, category, stock_quantity });
       fetchData();
       setShowEditModal(false);
       setSelectedProduct(null);
@@ -76,7 +76,7 @@ const Products = () => {
   const handleDeleteProduct = async (id: string) => {
     console.log('Deleting product with ID:', id);
     try {
-      await axios.delete(`http://127.0.0.1:5000/product/${id}`);
+      await axios.delete(`/product/${id}`);
       fetchData();
     } catch (error) {
       console.error('Error deleting product:', error);

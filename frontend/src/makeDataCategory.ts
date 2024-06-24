@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from './axiosConfig';
 
 const fetchCategories = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:5000/categories');
+    const response = await axios.get('/categories');
     return response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
