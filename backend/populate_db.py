@@ -62,7 +62,6 @@ def create_fake_sales(n):
             customer=random.choice(customers).name,
             date=fake.date_time_this_year(),
             quantity=random.randint(1, 10),
-            price_per_quantity=round(random.uniform(10.0, 100.0), 2)
         )
         db.session.add(sale)
     db.session.commit()
