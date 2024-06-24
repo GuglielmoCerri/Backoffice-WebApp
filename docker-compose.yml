@@ -2,7 +2,7 @@ services:
   frontend:
     build:
       context: ./frontend
-    image: frontend-image:latest
+    image: backoffice-frontend:latest
     ports:
       - "3000:3000"
     networks:
@@ -15,7 +15,7 @@ services:
   backend:
     build:
       context: ./backend
-    image: backend-image:latest
+    image: backoffice-backend:latest
     ports:
       - "5000:5000"  
     networks:
