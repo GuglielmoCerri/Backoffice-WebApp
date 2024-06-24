@@ -14,8 +14,8 @@ jobs:
         run: |
           docker login --username GuglielmoCerri --password ${{ secrets.GH_PAT }} ghcr.io
           docker compose build
-          docker tag backoffice-frontend:latest ghcr.io/GuglielmoCerri/backoffice-frontend:latest
-          docker tag backoffice-backend:latest ghcr.io/GuglielmoCerri/backoffice-backend:latest
-          docker push ghcr.io/GuglielmoCerri/backoffice-frontend:latest
-          docker push ghcr.io/GuglielmoCerri/backoffice-backend:latest
+          docker tag backoffice-frontend:latest ghcr.io/guglielmocerri/backoffice-frontend:latest
+          docker tag backoffice-backend:latest ghcr.io/guglielmocerri/backoffice-backend:latest
+          docker push ghcr.io/guglielmocerri/backoffice-frontend:latest
+          docker push ghcr.io/guglielmocerri/backoffice-backend:latest
       
