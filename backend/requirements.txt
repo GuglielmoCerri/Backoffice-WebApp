@@ -1,8 +1,10 @@
 Flask
 Flask-JWT-Extended
 Flask-SQLAlchemy
+Flask-Caching
+flask-cors
 Flask-Migrate
+matplotlib
 python-dotenv
 pandas
 Faker
-Flask-Caching
