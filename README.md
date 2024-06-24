@@ -78,12 +78,12 @@ Follow these steps to install and run the application.
 
 5. Initialize the database:
     ```bash
-    flask init_db
+    python3 init_db
     ```
 
 6. (Optional) Populate the database with fake data:
     ```bash
-    flask populate_db
+    python3 populate_db
     ```
 
 7. Run the Flask server:
