@@ -1,8 +1,6 @@
 services:
   frontend:
-    build:
-      context: ./frontend
-    image: backoffice-frontend:latest
+    image: ghcr.io/guglielmocerri/backoffice-frontend:latest  
     ports:
       - "3000:3000"
     networks:
@@ -13,9 +11,7 @@ services:
       - REACT_APP_BACKEND_URL=http://backend:5000
 
   backend:
-    build:
-      context: ./backend
-    image: backoffice-backend:latest
+    image: ghcr.io/guglielmocerri/backoffice-backend:latest  
     ports:
       - "5000:5000"  
     networks:
