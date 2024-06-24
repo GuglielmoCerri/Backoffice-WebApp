@@ -69,17 +69,24 @@ Follow these steps to install and run the application.
     pip3 install -r requirements.txt
     ```
 
-4. Initialize the database:
+4. Create a .env file in the backend directory with the following content:
+    ```text
+    SQLALCHEMY_DATABASE_URI=sqlite:///app.db
+    JWT_SECRET_KEY=Test
+    ```
+    You can replace YourSecretKey with your own JWT secret key for enhanced security.
+
+5. Initialize the database:
     ```bash
     flask init_db
     ```
 
-5. (Optional) Populate the database with fake data:
+6. (Optional) Populate the database with fake data:
     ```bash
     flask populate_db
     ```
 
-6. Run the Flask server:
+7. Run the Flask server:
     ```bash
     flask run
     ```
